@@ -17,8 +17,8 @@ def name(agr1, agr2, ...)
 ```
 
 ### Project
-* Manage personal income and expenditure *
-Create function * income_outcome *
+**Manage personal income and expenditure**
+Create function **income_outcome**
 Input:
 - Enter the amount collected
 - Enter the amount spent (study, entertainment, eating)
@@ -37,8 +37,8 @@ entertaiment > eating: You need to pay attention to health
 ```
 ### Exercise
 
-Ex1: Write a function: game_fun(). Requirement is the computer will give a random number A any of about 1 to 100. The player's task is to correctly guess that random number A. In each guess, if the guess is wrong the computer will notify the player the number of players given is lower or greater than A; If you guessed correctly, you will notice: "Congratulations you've guessed correctly".
+**Exercise1**: Write a function: game_fun(). Requirement is the computer will give a random number A any of about 1 to 100. The player's task is to correctly guess that random number A. In each guess, if the guess is wrong the computer will notify the player the number of players given is lower or greater than A; If you guessed correctly, you will notice: "Congratulations you've guessed correctly".
 
-Ex2: Rewrite exercise 1, adding the number of false guesses
+**Exercise2**: Rewrite exercise 1, adding the number of false guesses
 player.
 
