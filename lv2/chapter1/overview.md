@@ -16,8 +16,7 @@ use function
 def name(agr1, agr2, ...)
 ```
 
-### Project
-**Manage personal income and expenditure**
+### Project: Manage personal income and expenditure
 Create function **income_outcome**
 Input:
 - Enter the amount collected
