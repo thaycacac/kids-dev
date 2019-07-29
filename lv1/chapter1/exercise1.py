@@ -1,0 +1,1 @@
+print('Hello Python, I\'m Pham Ngoc Hoa')

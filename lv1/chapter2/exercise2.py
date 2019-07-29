@@ -1,0 +1,7 @@
+print('*************************************************')
+print('* 1. Programming and application development    *')
+print('* 2. Robots and electronics automatically       *')
+print('* 3. 3D technology and multimedia communication *')
+print('*************************************************')
+course = input('Which course do you choose?: ')
+print('You have just selected the digital course', course)
