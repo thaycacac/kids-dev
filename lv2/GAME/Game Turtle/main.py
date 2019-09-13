@@ -18,8 +18,7 @@ class Animal(turtle.Turtle):
     def run(self):
         self.speed(1)
         self.pendown()
-        
-        self.forward(485)
+        self.forward(10)
 
 class Flag(turtle.Turtle):
 
@@ -41,10 +40,15 @@ class Flag(turtle.Turtle):
 flag = Flag()
 flag.draw()
 
-turtle1 = Animal("yellow", 50)
-turtle2 = Animal("green", 100)
-turtle3 = Animal("blue", 0)
-turtle4 = Animal("orange", -50)
+turtles = []
+turtles.append(Animal("yellow", 50))
+turtles.append(Animal("green", 100))
+turtles.append(Animal("blue", 0))
+turtles.append(Animal("orange", -50))
 
-turtle1.run()
+while True:
+    number = random.randint(0, 4)
+    turtles[number - 1].run()
+    if turtles[number-1].xcor() >= 185:
+        break
     
