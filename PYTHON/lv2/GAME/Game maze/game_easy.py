@@ -43,13 +43,13 @@ def init_game():
 
     #create player
     class Player(turtle.Turtle):
-
+        
         def __init__(self):
             turtle.Turtle.__init__(self)
             self.shape(bottom)
             self.penup()
             self.speed(0)
-            self.gold = 0
+            self.mana = 500
 
         def up(self):
             self.shape(top)
@@ -90,13 +90,14 @@ def init_game():
 
     #create treasure
     class Treasure(turtle.Turtle):
-
+        
         def __init__(self, x, y):
             turtle.Turtle.__init__(self)
-            self.shape(image_treasures[random.randint(0, 1)])
+            self.number_random = random.randint(0, 1)
+            self.shape(image_treasures[self.number_random])
+            self.mana = (self.number_random + 1) * 100
             self.penup()
             self.speed(0)
-            self.gold = 100
             self.goto(x, y)
 
         def destroy(self):
@@ -105,10 +106,12 @@ def init_game():
 
     #class monster
     class Monster(turtle.Turtle):
-
+        
         def __init__(self, x, y):
             turtle.Turtle.__init__(self)
-            self.shape(image_monsters[random.randint(0, 1)])
+            self.number_random = random.randint(0, 1)
+            self.shape(image_monsters[self.number_random])
+            self.mana = -(self.number_random + 1) * 100
             self.penup()
             self.speed(0)
             self.gold = -25
@@ -207,24 +210,40 @@ def init_game():
     for monster in monsters:
         turtle.ontimer(monster.move, 250)
 
+    #show mana
+    def show_mana(mana):
+        turtle.clear()
+        turtle.color('white')
+        turtle.penup()
+        turtle.goto(-270, 300)
+        style = ('Courier', 24, 'bold')
+        turtle.write(mana, font=style, align='center')
+        turtle.hideturtle()
+
+
 
     while True:
         for treasure in treasures:
             if player.is_collision(treasure):
-                player.gold += treasure.gold
-                print('Play gold: {}'.format(player.gold))
+                player.mana += treasure.mana
+                show_mana(player.mana)
                 treasure.destroy()
                 treasures.remove(treasure)
         for monster in monsters:
             if player.is_collision(monster):
-                turtle.clearscreen()
-                turtle.color('red')
-                turtle.penup()
-                turtle.goto(0, -45)
-                style = ('Courier', 24, 'italic')
-                turtle.write('You died! Play again', font=style, align='center')
-                turtle.hideturtle()
-                main.main()
-                turtle.done()
-                break
+                player.mana += monster.mana
+                show_mana(player.mana)
+                monster.destroy()
+                monsters.remove(monster)
+                if player.mana <= 0:
+                    turtle.clearscreen()
+                    turtle.color('red')
+                    turtle.penup()
+                    turtle.goto(0, -45)
+                    style = ('Courier', 24, 'italic')
+                    turtle.write('You died! Play again', font=style, align='center')
+                    turtle.hideturtle()
+                    main.main()
+                    turtle.done()
+                    break
         screen.update()
