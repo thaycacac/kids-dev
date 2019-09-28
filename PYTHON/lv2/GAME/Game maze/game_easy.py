@@ -10,14 +10,28 @@ def init_game():
     screen.tracer(0)
 
     #register shape
-    wall = "wall_0.gif"
+    wall = "wall_easy.gif"
     screen.addshape(wall)
+    left = "left.gif"
+    screen.addshape(left)
+    right = "right.gif"
+    screen.addshape(right)
+    top = "top.gif"
+    screen.addshape(top)
+    bottom = "bottom.gif"
+    screen.addshape(bottom)
+    image_monsters = ["monster_0.gif", "monster_1.gif", "monster_2.gif", "monster_3.gif"]
+    for i in range(4):
+        screen.addshape(image_monsters[i])
+    image_treasures = ["treasure_0.gif", "treasure_1.gif", "treasure_2.gif", "treasure_3.gif"]
+    for i in range(4):
+        screen.addshape(image_treasures[i])
 
     # create list
     levels = []
     walls = []
     treasures = []
-    enemies = []
+    monsters = []
 
     #create pen
     class Pen(turtle.Turtle):
@@ -32,31 +46,34 @@ def init_game():
 
         def __init__(self):
             turtle.Turtle.__init__(self)
-            self.shape("square")
-            self.color("blue")
+            self.shape(bottom)
             self.penup()
             self.speed(0)
             self.gold = 0
 
         def up(self):
+            self.shape(top)
             move_to_x = self.xcor()
             move_to_y = self.ycor() + 24
             if (move_to_x, move_to_y) not in walls:
                 self.goto(move_to_x, move_to_y)
 
         def down(self):
+            self.shape(bottom)
             move_to_x = self.xcor()
             move_to_y = self.ycor() - 24
             if (move_to_x, move_to_y) not in walls:
                 self.goto(move_to_x, move_to_y)
 
         def left(self):
+            self.shape(left)
             move_to_x = self.xcor() - 24
             move_to_y = self.ycor()
             if (move_to_x, move_to_y) not in walls:
                 self.goto(move_to_x, move_to_y)
 
         def right(self):
+            self.shape(right)
             move_to_x = self.xcor() + 24
             move_to_y = self.ycor()
             if (move_to_x, move_to_y) not in walls:
@@ -76,8 +93,7 @@ def init_game():
 
         def __init__(self, x, y):
             turtle.Turtle.__init__(self)
-            self.shape("circle")
-            self.color("yellow")
+            self.shape(image_treasures[random.randint(0, 1)])
             self.penup()
             self.speed(0)
             self.gold = 100
@@ -87,13 +103,12 @@ def init_game():
             self.goto(2000, 2000)
             self.hideturtle()
 
-    #class enemy
-    class Enemy(turtle.Turtle):
+    #class monster
+    class Monster(turtle.Turtle):
 
         def __init__(self, x, y):
             turtle.Turtle.__init__(self)
-            self.shape("circle")
-            self.color("green")
+            self.shape(image_monsters[random.randint(0, 1)])
             self.penup()
             self.speed(0)
             self.gold = -25
@@ -176,13 +191,11 @@ def init_game():
                 elif character == "T":
                     treasures.append(Treasure(position_x, position_y))
                 elif character == "E":
-                    enemies.append(Enemy(position_x, position_y))
+                    monsters.append(Monster(position_x, position_y))
 
     #create instance
     pen = Pen()
     player = Player()
-
-    print(len(enemies))
 
     #keyboard bindding
     turtle.listen()
@@ -192,11 +205,11 @@ def init_game():
     turtle.onkey(player.left, "Left")
 
     #set up level
-    setup_maze(levels[0])
+    setup_maze(level_1)
 
-    #run enemy
-    for enemy in enemies:
-        turtle.ontimer(enemy.move, 250)
+    #run monster
+    for monster in monsters:
+        turtle.ontimer(monster.move, 250)
 
 
     while True:
@@ -206,8 +219,8 @@ def init_game():
                 print('Play gold: {}'.format(player.gold))
                 treasure.destroy()
                 treasures.remove(treasure)
-        for enemy in enemies:
-            if player.is_collision(enemy):
+        for monster in monsters:
+            if player.is_collision(monster):
                 print('Player dead!!!')
                 break
         screen.update()
