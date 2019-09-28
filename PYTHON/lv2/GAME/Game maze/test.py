@@ -2,7 +2,7 @@ import turtle
 import math
 import random
 import time
-import main
+import game_easy
 
 screen = turtle.Screen()
 screen.tracer(0)
@@ -31,7 +31,7 @@ class Level(turtle.Turtle):
     def play_game(self, x, y):
         if self.level == "easy.gif":
             turtle.clearscreen()
-            main.create_game_easy()
+            game_easy.init_game()
         elif self.level == "medium.gif":
             print("medium")
         else:
