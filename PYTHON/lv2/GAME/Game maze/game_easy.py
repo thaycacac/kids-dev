@@ -1,6 +1,7 @@
 import turtle
 import math
 import random
+import main
 
 def init_game():
     screen = turtle.Screen()
@@ -28,7 +29,6 @@ def init_game():
         screen.addshape(image_treasures[i])
 
     # create list
-    levels = []
     walls = []
     treasures = []
     monsters = []
@@ -170,10 +170,6 @@ def init_game():
     "XXXXXXXXXXXXXXXXXXXXXXXXX"
     ]
 
-    #add level
-    levels.append(level_1)
-
-
     #setup level
     def setup_maze(level):
         for y in range(len(level)):
@@ -221,6 +217,14 @@ def init_game():
                 treasures.remove(treasure)
         for monster in monsters:
             if player.is_collision(monster):
-                print('Player dead!!!')
+                turtle.clearscreen()
+                turtle.color('red')
+                turtle.penup()
+                turtle.goto(0, -45)
+                style = ('Courier', 24, 'italic')
+                turtle.write('You died! Play again', font=style, align='center')
+                turtle.hideturtle()
+                main.main()
+                turtle.done()
                 break
         screen.update()
