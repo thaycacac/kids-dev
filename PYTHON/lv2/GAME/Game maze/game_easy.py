@@ -3,7 +3,7 @@ import math
 import random
 import main
 
-def init_game():
+def init_game(name_level, map_level):
     screen = turtle.Screen()
     screen.bgcolor("black")
     screen.title("A Maze Game")
@@ -11,8 +11,12 @@ def init_game():
     screen.tracer(0)
 
     #register shape
-    wall = "wall_easy.gif"
-    screen.addshape(wall)
+    wall_easy = "wall_easy.gif"
+    screen.addshape(wall_easy)
+    wall_medium = "wall_medium.gif"
+    screen.addshape(wall_medium)
+    wall_hard = "wall_hard.gif"
+    screen.addshape(wall_hard)
     left = "left.gif"
     screen.addshape(left)
     right = "right.gif"
@@ -21,11 +25,11 @@ def init_game():
     screen.addshape(top)
     bottom = "bottom.gif"
     screen.addshape(bottom)
-    image_monsters = ["monster_0.gif", "monster_1.gif", "monster_2.gif", "monster_3.gif"]
-    for i in range(4):
+    image_monsters = ["monster_0.gif", "monster_1.gif", "monster_2.gif", "monster_3.gif", "monster_4.gif"]
+    for i in range(5):
         screen.addshape(image_monsters[i])
-    image_treasures = ["treasure_0.gif", "treasure_1.gif", "treasure_2.gif", "treasure_3.gif"]
-    for i in range(4):
+    image_treasures = ["treasure_0.gif", "treasure_1.gif", "treasure_2.gif", "treasure_3.gif", "treasure_4.gif"]
+    for i in range(5):
         screen.addshape(image_treasures[i])
 
     # create list
@@ -37,7 +41,12 @@ def init_game():
     class Pen(turtle.Turtle):
         def __init__(self):
             turtle.Turtle.__init__(self)
-            self.shape(wall)
+            if name_level == "easy":
+                self.shape(wall_easy)
+            elif name_level == "medium":
+                self.shape(wall_medium)
+            else:
+                self.shape(wall_hard)
             self.penup()
             self.speed(0)
 
@@ -93,7 +102,12 @@ def init_game():
         
         def __init__(self, x, y):
             turtle.Turtle.__init__(self)
-            self.number_random = random.randint(0, 1)
+            if name_level == "easy":
+                self.number_random = random.randint(0, 1)
+            elif name_level == "medium":
+                self.number_random = random.randint(0, 2)
+            else:
+                self.number_random = random.randint(3, 4)
             self.shape(image_treasures[self.number_random])
             self.mana = (self.number_random + 1) * 100
             self.penup()
@@ -109,7 +123,12 @@ def init_game():
         
         def __init__(self, x, y):
             turtle.Turtle.__init__(self)
-            self.number_random = random.randint(0, 1)
+            if name_level == "easy":
+                self.number_random = random.randint(0, 1)
+            elif name_level == "medium":
+                self.number_random = random.randint(0, 2)
+            else:
+                self.number_random = random.randint(3, 4)
             self.shape(image_monsters[self.number_random])
             self.mana = -(self.number_random + 1) * 100
             self.penup()
@@ -144,35 +163,6 @@ def init_game():
             self.goto(2000, 2000)
             self.hideturtle()
 
-    #lv1
-    level_1 = [
-    "XXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XP  XXXXXXXE         XXXX",
-    "X  XXXXXXX  XXXXXX  XXXXX",
-    "X       XX  XXXXXX  XXXXX",
-    "X      XX  XXX        XXX",
-    "XXXXXX  XX  XXX        XX",
-    "XXXXXX  XX  XXXXXX  XXXXX",
-    "XXXXXX  XX    XXXX  XXXXX",
-    "X  XXX        XXXX  XXXXX",
-    "X  XXX  XXXXXXXXXXXXXXXXX",
-    "X         XXXXXXXXXXXXXXX",
-    "XE               XXXXXXXX",
-    "XXXXXXXXXXXX     XXXXX  X",
-    "XXXXXXXXXXXXXXX  XXXXX  X",
-    "XXX  XXXXXXXXXX         X",
-    "XXX                     X",
-    "XXX        TXXXXXXXXXXXXX",
-    "XXXXXXXXXX  XXXXXXXXXXXXX",
-    "XXXXXXXXXXE             X",
-    "XX   XXXXX              X",
-    "XX   XXXXXXXXXXXXX  XXXXX",
-    "XX    XXXXXXXXXXXX  XXXXX",
-    "XX     E   XXXX        XX",
-    "XXXX               T    X",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX"
-    ]
-
     #setup level
     def setup_maze(level):
         for y in range(len(level)):
@@ -204,7 +194,7 @@ def init_game():
     turtle.onkey(player.left, "Left")
 
     #set up level
-    setup_maze(level_1)
+    setup_maze(map_level)
 
     #run monster
     for monster in monsters:

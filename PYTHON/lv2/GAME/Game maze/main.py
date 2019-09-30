@@ -4,6 +4,91 @@ import random
 import time
 import game_easy
 
+map_easy = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP  XXXXXXXE         XXXX",
+    "X  XXXXXXX  XXXXXX  XXXXX",
+    "X       XX  XXXXXX  XXXXX",
+    "X      XX  XXX        XXX",
+    "XXXXXX  XX  XXX        XX",
+    "XXXXXX  XX  XXXXXX  XXXXX",
+    "XXXXXX  XX    XXXX  XXXXX",
+    "X  XXX        XXXX  XXXXX",
+    "X  XXX  XXXXXXXXXXXXXXXXX",
+    "X         XXXXXXXXXXXXXXX",
+    "XE               XXXXXXXX",
+    "XXXXXXXXXXXX     XXXXX  X",
+    "XXXXXXXXXXXXXXX  XXXXX  X",
+    "XXX  XXXXXXXXXX         X",
+    "XXX                     X",
+    "XXX        TXXXXXXXXXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXX",
+    "XXXXXXXXXXE             X",
+    "XX   XXXXX              X",
+    "XX   XXXXXXXXXXXXX  XXXXX",
+    "XX    XXXXXXXXXXXX  XXXXX",
+    "XX     E   XXXX        XX",
+    "XXXX               T    X",
+    "XXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
+map_medium = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP  XXXXXXXE         XXXX",
+    "X  XXXXXXX  XXXXXX  XXXXX",
+    "X       XX  XXXXXX  XXXXX",
+    "X      XX  XXX        XXX",
+    "XXXXXX  XX  XXX        XX",
+    "XXXXXX  XX  XXXXXX  XXXXX",
+    "XXXXXX  XX    XXXX  XXXXX",
+    "X  XXX        XXXX  XXXXX",
+    "X  XXX  XXXXXXXXXXXXXXXXX",
+    "X         XXXXXXXXXXXXXXX",
+    "XE               XXXXXXXX",
+    "XXXXXXXXXXXX     XXXXX  X",
+    "XXXXXXXXXXXXXXX  XXXXX  X",
+    "XXX  XXXXXXXXXX         X",
+    "XXX                     X",
+    "XXX        TXXXXXXXXXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXX",
+    "XXXXXXXXXXE             X",
+    "XX   XXXXX              X",
+    "XX   XXXXXXXXXXXXX  XXXXX",
+    "XX    XXXXXXXXXXXX  XXXXX",
+    "XX     E   XXXX        XX",
+    "XXXX               T    X",
+    "XXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
+map_hard = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP  XXXXXXXE         XXXX",
+    "X  XXXXXXX  XXXXXX  XXXXX",
+    "X       XX  XXXXXX  XXXXX",
+    "X      XX  XXX        XXX",
+    "XXXXXX  XX  XXX        XX",
+    "XXXXXX  XX  XXXXXX  XXXXX",
+    "XXXXXX  XX    XXXX  XXXXX",
+    "X  XXX        XXXX  XXXXX",
+    "X  XXX  XXXXXXXXXXXXXXXXX",
+    "X         XXXXXXXXXXXXXXX",
+    "XE               XXXXXXXX",
+    "XXXXXXXXXXXX     XXXXX  X",
+    "XXXXXXXXXXXXXXX  XXXXX  X",
+    "XXX  XXXXXXXXXX         X",
+    "XXX                     X",
+    "XXX        TXXXXXXXXXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXX",
+    "XXXXXXXXXXE             X",
+    "XX   XXXXX              X",
+    "XX   XXXXXXXXXXXXX  XXXXX",
+    "XX    XXXXXXXXXXXX  XXXXX",
+    "XX     E   XXXX        XX",
+    "XXXX               T    X",
+    "XXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
+
 def main():
     screen = turtle.Screen()
     screen.tracer(0)
@@ -32,11 +117,13 @@ def main():
         def play_game(self, x, y):
             if self.level == "easy.gif":
                 turtle.clearscreen()
-                game_easy.init_game()
+                game_easy.init_game("easy", map_easy)
             elif self.level == "medium.gif":
-                print("medium")
+                turtle.clearscreen()
+                game_easy.init_game("medium", map_medium)
             else:
-                print("hard")
+                turtle.clearscreen()
+                game_easy.init_game("hard", map_hard)
 
     #add level
     level_easy = Level(easy, -120)
