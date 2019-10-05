@@ -1,216 +1,141 @@
 import turtle
 import math
 import random
+import time
+import game_easy
 
-screen = turtle.Screen()
-screen.bgcolor("black")
-screen.title("A Maze Game")
-screen.setup(700, 700)
-screen.tracer(0)
-
-#register shape
-#turtle.shape("wizard_right.gif")
-#turtle.shape("wizard_left.gif")
-#turtle.shape("treasure.gif")
-#turtle.shape("wall.gif")
-
-# create list
-levels = []
-walls = []
-treasures = []
-enemies = []
-
-#create pen
-class Pen(turtle.Turtle):
-    def __init__(self):
-        turtle.Turtle.__init__(self)
-        self.shape("square")
-        self.color("white")
-        self.penup()
-        self.speed(0)
-
-#create player
-class Player(turtle.Turtle):
-    
-    def __init__(self):
-        turtle.Turtle.__init__(self)
-        self.shape("square")
-        self.color("blue")
-        self.penup()
-        self.speed(0)
-        self.gold = 0
-        
-    def up(self):
-        move_to_x = self.xcor()
-        move_to_y = self.ycor() + 24
-        if (move_to_x, move_to_y) not in walls:
-            self.goto(move_to_x, move_to_y)
-        
-    def down(self):
-        move_to_x = self.xcor()
-        move_to_y = self.ycor() - 24
-        if (move_to_x, move_to_y) not in walls:
-            self.goto(move_to_x, move_to_y)
-        
-    def left(self):
-        move_to_x = self.xcor() - 24
-        move_to_y = self.ycor()
-        if (move_to_x, move_to_y) not in walls:
-            self.goto(move_to_x, move_to_y)
-        
-    def right(self):
-        move_to_x = self.xcor() + 24
-        move_to_y = self.ycor()
-        if (move_to_x, move_to_y) not in walls:
-            self.goto(move_to_x, move_to_y)
-
-    def is_collision(self, other):
-        a = self.xcor() - other.xcor()
-        b = self.ycor() - other.ycor()
-        distance = math.sqrt((a ** 2) + (b ** 2))
-        if distance < 5:
-            return True
-        else:
-            return False
-
-#create treasure
-class Treasure(turtle.Turtle):
-
-    def __init__(self, x, y):
-        turtle.Turtle.__init__(self)
-        self.shape("circle")
-        self.color("yellow")
-        self.penup()
-        self.speed(0)
-        self.gold = 100
-        self.goto(x, y)
-
-    def destroy(self):
-        self.goto(2000, 2000)
-        self.hideturtle()
-
-#class enemy
-class Enemy(turtle.Turtle):
-
-    def __init__(self, x, y):
-        turtle.Turtle.__init__(self)
-        self.shape("circle")
-        self.color("green")
-        self.penup()
-        self.speed(0)
-        self.gold = -25
-        self.goto(x, y)
-        self.direction = random.choice(["up", "down", "left", "right"])
-
-    def move(self):
-        if self.direction == "up":
-            x = 0
-            y = 24
-        elif self.direction == "down":
-            x = 0
-            y = -24
-        elif self.direction == "left":
-            x = -24
-            y = 0
-        elif self.direction == "right":
-            x = 24
-            y = 0
-        move_to_x = self.xcor() + x
-        move_to_y = self.ycor() + y
-
-        if (move_to_x, move_to_y) not in walls:
-            self.goto(move_to_x, move_to_y)
-        else:
-            self.direction = random.choice(["up", "down", "left", "right"])
-        turtle.ontimer(self.move, t = random.randint(100, 300))
-
-    def destroy(self):
-        self.goto(2000, 2000)
-        self.hideturtle()
-
-#lv1
-level_1 = [
-"XXXXXXXXXXXXXXXXXXXXXXXXX",
-"XP  XXXXXXXE         XXXX",
-"X  XXXXXXX  XXXXXX  XXXXX",
-"X       XX  XXXXXX  XXXXX",
-"X      XX  XXX        XXX",
-"XXXXXX  XX  XXX        XX",
-"XXXXXX  XX  XXXXXX  XXXXX",
-"XXXXXX  XX    XXXX  XXXXX",
-"X  XXX        XXXX  XXXXX",
-"X  XXX  XXXXXXXXXXXXXXXXX",
-"X         XXXXXXXXXXXXXXX",
-"XE               XXXXXXXX",
-"XXXXXXXXXXXX     XXXXX  X",
-"XXXXXXXXXXXXXXX  XXXXX  X",
-"XXX  XXXXXXXXXX         X",
-"XXX                     X",
-"XXX        TXXXXXXXXXXXXX",
-"XXXXXXXXXX  XXXXXXXXXXXXX",
-"XXXXXXXXXXE             X",
-"XX   XXXXX              X",
-"XX   XXXXXXXXXXXXX  XXXXX",
-"XX    XXXXXXXXXXXX  XXXXX",
-"XX     E   XXXX        XX",
-"XXXX               T    X",
-"XXXXXXXXXXXXXXXXXXXXXXXXX"
+map_easy = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP  XXXXXXXE         XXXXXX      XXXXXX",
+    "X  XXXXXXX  XXXXXX  XXXXXXX  XX  XXXXXX",
+    "X       XX  XXXXXX  XXXX     XX    XXXX",
+    "X      XX  XXX        XX  XX XX     XXX",
+    "XXXXXX  XX  XXX                 XXX  XX",
+    "XXXXXX  XX  XXXXXX  XXXXX     XXXXX   X",
+    "XXXXXX  XX    XXXX  XXXXX        XX  XX",
+    "X  XXX        XXXX  XXXXXXXXXX   XXXXXX",
+    "X  XXX  XXXXXXXXX          XXXX  XXXXXX",
+    "X         XXXXXXXXXXXXXXX  XXXX  XXXXXX",
+    "XE               XXXXXXXX  XXXX    XXXX",
+    "XXXXXXXXXXXX     XXXXX  X    XXXX  XXXX",
+    "XXXXXXXXXXXXXXX  XXXXX  XXX  XXXX  XXXX",
+    "XXX  XXXXXXXXXX         XXX  XXXX    XX",
+    "XXX                     XXXXXXX    XXXX",
+    "XXX        TXXXXXXXXXXXXXXXXXXX  XXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXXXX      XXXXXX",
+    "XXXXXXXXXXE             XXXXX     XXXXX",
+    "XX   XXXXX              XXXXXXXX  XXXXX",
+    "XX   XXXXXXXXXXXXX  XXXXXXXXXXXX  XXXXX",
+    "XX    XXXXXXXXXXXX  X      XXXXX    XXX",
+    "XX     E   XXXX        XX     XXXX  XXX",
+    "XXXX               TXXXXXXXX  XXXX  XXX",
+    "XXXXXXXXXXXXXXXX        XXXX        HXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ]
 
-#add level
-levels.append(level_1)
+map_medium = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP  XXXXXXXE         XXXXXX      XXXXXX",
+    "X  XXXXXXX  XXXXXX  XXXXXXX  XX  XXXXXX",
+    "X      TXX  XXXXXX  XXXX     XX   TXXXX",
+    "X E    XX  XXX       EXX  XX XX     XXX",
+    "XXXXXX  XX  XXX              E  XXX  XX",
+    "XXXXXX  XX  XXXXXX  XXXXX     XXXXX   X",
+    "XXXXXX  XX    XXXX  XXXXX        XX  XX",
+    "X  XXX        XXXX  XXXXXXXXXX   XXXXXX",
+    "X  XXX  XXXXXXXXX   E      XXXX  XXXXXX",
+    "X         XXXXXXXXXXXXXXX  XXXX  XXXXXX",
+    "XE               XXXXXXXX  XXXX    XXXX",
+    "XXXXXXXXXXXX     XXXXX TX    XXXX  XXXX",
+    "XXXXXXXXXXXXXXX  XXXXX  XXX  XXXX  XXXX",
+    "XXX TXXXXXXXXXX         XXX  XXXX   TXX",
+    "XXXE                    XXXXXXX   EXXXX",
+    "XXX        TXXXXXXXXXXXXXXXXXXX  XXXXXX",
+    "XXXXXXXXXX  XXXXXXXXXXXXXXX      XXXXXX",
+    "XXXXXXXXXXE             XXXXX     XXXXX",
+    "XXE  XXXXX             EXXXXXXXX  XXXXX",
+    "XX   XXXXXXXXXXXXX  XXXXXXXXXXXX EXXXXX",
+    "XX    XXXXXXXXXXXX  X      XXXXX    XXX",
+    "XX     E   XXXX        XX     XXXX  XXX",
+    "XXXXT              TXXXXXXXX  XXXX  XXX",
+    "XXXXXXXXXXXXXXXX       TXXXX    E   HXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+]
+
+map_hard = [
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XP     XT   X     X X  XT       XT    X",
+    "X X XX     EX X X X XX         EX XXXXX",
+    "X X XXXXXXX X XXX X  X XXXXXXXX X    EX",
+    "X XXXE    X X   X XX X X        XXXXX X",
+    "X X   X X X XXX X    X XXXXXXXX X     X",
+    "X X XXXXX X     XXXXXX  X       X XXXXX",
+    "X X XE TX XXXXXXX       X XXXXXXX X   X",
+    "X X X X X       X X X XXX       X X X X",
+    "X X X X XXXXXXX X X X XXXXXXXXX X X X X",
+    "X X X X X   X X X X X X         X X X X",
+    "X X X X       X   X   X XXXXX XXX   X X",
+    "X X X XXXXXXXXXXXXX XXX X X XXX XXXXX X",
+    "XT  X    X             EX             X",
+    "XXXXXXXX X XXXXXXXXXT   X X X XXXXX XXX",
+    "X        X         XXXXXXXX XXXT  XXX X",
+    "XXXXXXXX X XXXXXXX X     EXE          X",
+    "X        X       X X X XX XXXXXXXXXXX X",
+    "X X XXX XXXXXXXX X X X X          X X X",
+    "X X XTX X      X X X X X X  TXXXX X X X",
+    "X X    EX X XX X X X XXXXXXXXX    X X X",
+    "X XXXXXXX X X  X XXX X       X XXXX X X",
+    "X X     X XXXX X     X X X X X        X",
+    "X X X X X XT   XXXXXXX X T X XXXXXXXX X",
+    "X   X X   XXXX        EXXXXX         HX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+]
 
 
-#setup level
-def setup_maze(level):
-    for y in range(len(level)):
-        for x in range(len(level[y])):
-            character = level[y][x]
-            position_x = -288 + (x * 24)
-            position_y = 288 - (y * 24)
-            if character == "X":
-                pen.goto(position_x, position_y)
-                pen.stamp()
-                #add coordinates to wall list
-                walls.append((position_x, position_y))
-            elif character == "P":
-                player.goto(position_x, position_y)
-            elif character == "T":
-                treasures.append(Treasure(position_x, position_y))
-            elif character == "E":
-                enemies.append(Enemy(position_x, position_y))
+def main():
+    screen = turtle.Screen()
+    screen.tracer(0)
 
-#create instance
-pen = Pen()
-player = Player()
+    #register shape    
+    easy = "easy.gif"
+    medium = "medium.gif"
+    hard = "hard.gif"
+    screen.addshape(easy)
+    screen.addshape(medium)
+    screen.addshape(hard)
 
-print(len(enemies))
+    #create level
+    class Level(turtle.Turtle):
 
-#keyboard bindding
-turtle.listen()
-turtle.onkey(player.up, "Up")
-turtle.onkey(player.down, "Down")
-turtle.onkey(player.right, "Right")
-turtle.onkey(player.left, "Left")
+        level = ""
 
-#set up level
-setup_maze(levels[0])
+        def __init__(self, level, position_y):
+            turtle.Turtle.__init__(self)
+            self.shape(level)
+            self.penup()
+            self.goto(0, position_y)
+            self.level = level
+            self.onclick(self.play_game)
 
-#run enemy
-for enemy in enemies:
-    turtle.ontimer(enemy.move, 250)
+        def play_game(self, x, y):
+            if self.level == "easy.gif":
+                turtle.clearscreen()
+                game_easy.init_game("easy", map_easy)
+            elif self.level == "medium.gif":
+                turtle.clearscreen()
+                game_easy.init_game("medium", map_medium)
+            else:
+                turtle.clearscreen()
+                game_easy.init_game("hard", map_hard)
 
-while True:
-    for treasure in treasures:
-        if player.is_collision(treasure):
-            player.gold += treasure.gold
-            print('Play gold: {}'.format(player.gold))
-            treasure.destroy()
-            treasures.remove(treasure)
-    for enemy in enemies:
-        if player.is_collision(enemy):
-            print('Player dead!!!')
-            break
-    screen.update()
+    #add level
+    level_easy = Level(easy, -120)
+    level_medium = Level(medium, -170)
+    level_hard = Level(hard, -220)
 
+    screen.bgpic("introduction.png")
+    screen.title("Maze Game")
+    screen.setup(1000, 740)
+    screen.tracer(0)
 
+main()
